@@ -1,29 +1,13 @@
-# web
+# Witnessium front-end
 
-## Project setup
-```
-npm install
-```
+---
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### TODO
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- add account
+- view accounts
+- send transaction
+  + `POST transaction` with { networkId, inputs, outputs, amount }
+- track events via server-sent event
+- block explorer - search, view
+- node status
