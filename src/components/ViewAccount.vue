@@ -3,22 +3,22 @@
   <div class="navbar-brand">
     <h1 class="title">Witnessium Core Node</h1>
     <div class="navbar-menu">
-      <div class="navbar-start">
-        <div
-          class="navbar-item has-dropdown is-hoverable"
-          v-if="currentAccount != null">
-          <a class="navbar-link">{{ currentAccount }}</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" v-for="account in accounts" v-bind:key="account.id">
-              "{{ account.address }}"
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item" v-on:click="addAccount">Add New Account</a>
-          </div>
+      <div
+        class="navbar-item has-dropdown is-hoverable"
+        v-if="currentAccount != ''">
+        <a class="navbar-link">{{ currentAccount }}</a>
+        <div class="navbar-dropdown">
+          <a v-for="account in accounts" v-bind:key="account.id"
+            :class="currentAccount == account.address ? 'is-active navbar-item' : 'navbar-item' "
+            @click="changeAccount">
+            "{{ account.address }}"
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" @click="addAccount">Add New Account</a>
         </div>
-        <a class="navbar-item" v-else v-on:click="addAccount">Add New Account</a>
-        <div class="navbar-end"></div>
       </div>
+      <a class="navbar-item" v-else @click="addAccount">Add New Account</a>
+      <div class="navbar-end"></div>
     </div>
   </div>
 </nav>
@@ -26,9 +26,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { fromPrivateKey } from '../utils/keccak256';
-
-
+import { generate } from '../utils/keccak256';
+import * as Storage from '../utils/storage';
 
 function generateAddress(privateKey: string): string {
 
@@ -39,21 +38,44 @@ function generateAddress(privateKey: string): string {
 export default Vue.extend({
   name: 'ViewAccount',
   data: () => {
+    const current = Storage.current();
+    const currentAccount = current;
+
+    const accounts = Storage.keys()
 
     return {
-      currentAccount: "0x11",
-      accounts: [
-        { id: 0, address: "0x11" },
-        { id: 1, address: "0x22" }
-      ]
+      currentAccount,
+      accounts: accounts.map((address, id) => ({ id, address }))
     }
   },
+
   methods: {
     addAccount() {
-      alert(fromPrivateKey("abc"));
+      const pair = generate();
+
+      const pub = pair.getPublic("hex");
+      const pri = pair.getPrivate("hex");
+
+      Storage.set(pub, pri);
+      Storage.current(pub);
+
+      this.accounts.push({
+        id: this.accounts.length,
+        address: pub
+      });
+      this.currentAccount = pub;
     },
 
-    generateAddress
+    changeAccount(event: MouseEvent) {
+      const account = event.target.textContent.trim();
+      Storage.current(account);
+      this.currentAccount = account;
+    },
+
+    sign(publicKey: string): void {
+      const privateKey = Storage.get(publicKey);
+
+    }
   }
 });
 </script>

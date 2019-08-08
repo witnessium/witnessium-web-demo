@@ -9,7 +9,7 @@
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "@types/elliptic": "^6.4.9",
-    "buefy": "^0.7.8",
+    "buefy": "^0.7.10",
     "elliptic": "^6.5.0",
     "js-sha3": "^0.8.0",
     "vue": "^2.6.10"
@@ -17,6 +17,8 @@
   "devDependencies": {
     "@vue/cli-plugin-typescript": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
     "typescript": "^3.4.3",
     "vue-template-compiler": "^2.6.10"
   },

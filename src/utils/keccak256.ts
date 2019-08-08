@@ -18,3 +18,7 @@ export function fromPrivateKey(key: string): string {
 export function keccak256(data: Arrayish): string {
   return '0x' + keccak_256(arrayify(data));
 }
+
+export function generate(): EC.KeyPair {
+  return ec.genKeyPair();
+}
